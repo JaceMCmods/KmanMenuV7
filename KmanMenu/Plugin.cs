@@ -109,6 +109,8 @@ namespace KmanMenu
         public static int projhalohash = -820530352;
         public static int projhalotype = 0;
 
+        public static float projectiletimeout = 0;
+
         // YES ITS FROM MANGO I GOT ORAL PERMISSION TO USE HIS DRAW FUNCTION IT WAS TAKEN FROM DNSPY BECAUSE HE DIDNT HAVE THE CODE
         #region Draw
         private static void AddButton(float offset, string text)
@@ -823,7 +825,7 @@ namespace KmanMenu
                     }
                     if (Input.RightGrip)
                     {
-                        if (GorillaGameManager.instance != null)
+                        if (GorillaGameManager.instance != null && Time.time > projectiletimeout + 0.002f)
                         {
                             if (GorillaLocomotion.Player.Instance.rightControllerTransform.gameObject.GetComponent<VelocityTracker>() == null)
                             {
@@ -843,7 +845,7 @@ namespace KmanMenu
                              1f,
                              1f,
                             });
-
+                            projectiletimeout = Time.time;
                         }
                     }
 
@@ -854,72 +856,72 @@ namespace KmanMenu
                     {
                         if (AllowProjChange)
                         {
-                            ProjType++;
-                            if (ProjType == 0)
+                            projguntype++;
+                            if (projguntype == 0)
                             {
                                 buttons[17] = "Projectile Gun {SlingShot}";
-                                Projhash = -820530352;
+                                projgunhash = -820530352;
                                 Notif.SendNotification("Changed Projectile: Slingshot");
                             }
-                            if (ProjType == 1)
+                            if (projguntype == 1)
                             {
                                 buttons[17] = "Projectile Gun {Waterballoon}";
-                                Projhash = -1674517839;
+                                projgunhash = -1674517839;
                                 Notif.SendNotification("Changed Projectile: Waterballoon");
                             }
-                            if (ProjType == 2)
+                            if (projguntype == 2)
                             {
                                 buttons[17] = "Projectile Gun {SnowBall}";
-                                Projhash = -675036877;
+                                projgunhash = -675036877;
                                 Notif.SendNotification("Changed Projectile: Snowball");
                             }
-                            if (ProjType == 3)
+                            if (projguntype == 3)
                             {
                                 buttons[17] = "Projectile Gun {DeadShot}";
-                                Projhash = 693334698;
+                                projgunhash = 693334698;
                                 Notif.SendNotification("Changed Projectile: DeadShot");
                             }
-                            if (ProjType == 4)
+                            if (projguntype == 4)
                             {
                                 buttons[17] = "Projectile Gun {Cloud}";
-                                Projhash = 1511318966;
+                                projgunhash = 1511318966;
                                 Notif.SendNotification("Changed Projectile: Cloud");
                             }
-                            if (ProjType == 5)
+                            if (projguntype == 5)
                             {
                                 buttons[17] = "Projectile Gun {Cupid}";
-                                Projhash = 825718363;
+                                projgunhash = 825718363;
                                 Notif.SendNotification("Changed Projectile: Cupid");
                             }
-                            if (ProjType == 6)
+                            if (projguntype == 6)
                             {
                                 buttons[17] = "Projectile Gun {Ice}";
-                                Projhash = -1671677000;
+                                projgunhash = -1671677000;
                                 Notif.SendNotification("Changed Projectile: Ice");
                             }
-                            if (ProjType == 7)
+                            if (projguntype == 7)
                             {
                                 buttons[17] = "Projectile Gun {Elf}";
-                                Projhash = 1705139863;
+                                projgunhash = 1705139863;
                                 Notif.SendNotification("Changed Projectile: Elf");
                             }
-                            if (ProjType == 8)
+                            if (projguntype == 8)
                             {
                                 buttons[17] = "Projectile Gun {Rock}";
-                                Projhash = PoolUtils.GameObjHashCode(GameObject.Find("Environment Objects/PersistentObjects_Prefab/GlobalObjectPools/LavaRockProjectile(Clone)"));
+                                projgunhash = PoolUtils.GameObjHashCode(GameObject.Find("Environment Objects/PersistentObjects_Prefab/GlobalObjectPools/LavaRockProjectile(Clone)"));
                                 Notif.SendNotification("Changed Projectile: Rock");
                             }
-                            if (ProjType == 9)
+                            if (projguntype == 9)
                             {
                                 buttons[17] = "Projectile Gun {Spider}";
-                                Projhash = -790645151;
+                                projgunhash = -790645151;
                                 Notif.SendNotification("Changed Projectile: Spider");
                             }
-                            if (ProjType >= 10)
+                            if (projguntype >= 10)
                             {
-                                ProjType = 0;
+                                projguntype = 0;
                                 buttons[17] = "Projectile Gun {SlingShot}";
-                                Projhash = -820530352;
+                                projgunhash = -820530352;
                                 Notif.SendNotification("Changed Projectile: Slingshot");
                             }
 
@@ -942,13 +944,13 @@ namespace KmanMenu
                         Vector3 vector = (point - position).normalized;
                         float d = 50f;
                         vector *= d;
-                        if (GorillaGameManager.instance != null)
+                        if (GorillaGameManager.instance != null && Time.time > projectiletimeout + 0.002f)
                         {
                             GorillaGameManager.instance.photonView.RPC("LaunchSlingshotProjectile", RpcTarget.All, new object[]
                             {
                              position,
                              vector,
-                             Projhash,
+                             projgunhash,
                              -1,
                              true,
                              GorillaGameManager.instance.IncrementLocalPlayerProjectileCount(),
@@ -958,6 +960,7 @@ namespace KmanMenu
                              1f,
                              1f,
                             });
+                            projectiletimeout = Time.time;
                         }
                     }
 
@@ -968,72 +971,72 @@ namespace KmanMenu
                     {
                         if (AllowProjChange)
                         {
-                            ProjType++;
-                            if (ProjType == 0)
+                            projhalotype++;
+                            if (projhalotype == 0)
                             {
                                 buttons[18] = "Projectile Halo {SlingShot}";
-                                Projhash = -820530352;
+                                projhalohash = -820530352;
                                 Notif.SendNotification("Changed Projectile: Slingshot");
                             }
-                            if (ProjType == 1)
+                            if (projhalotype == 1)
                             {
                                 buttons[18] = "Projectile Halo {Waterballoon}";
-                                Projhash = -1674517839;
+                                projhalohash = -1674517839;
                                 Notif.SendNotification("Changed Projectile: Waterballoon");
                             }
-                            if (ProjType == 2)
+                            if (projhalotype == 2)
                             {
                                 buttons[18] = "Projectile Halo {SnowBall}";
-                                Projhash = -675036877;
+                                projhalohash = -675036877;
                                 Notif.SendNotification("Changed Projectile: Snowball");
                             }
-                            if (ProjType == 3)
+                            if (projhalotype == 3)
                             {
                                 buttons[18] = "Projectile Halo {DeadShot}";
-                                Projhash = 693334698;
+                                projhalohash = 693334698;
                                 Notif.SendNotification("Changed Projectile: DeadShot");
                             }
-                            if (ProjType == 4)
+                            if (projhalotype == 4)
                             {
                                 buttons[18] = "Projectile Halo {Cloud}";
-                                Projhash = 1511318966;
+                                projhalohash = 1511318966;
                                 Notif.SendNotification("Changed Projectile: Cloud");
                             }
-                            if (ProjType == 5)
+                            if (projhalotype == 5)
                             {
                                 buttons[18] = "Projectile Halo {Cupid}";
-                                Projhash = 825718363;
+                                projhalohash = 825718363;
                                 Notif.SendNotification("Changed Projectile: Cupid");
                             }
-                            if (ProjType == 6)
+                            if (projhalotype == 6)
                             {
                                 buttons[18] = "Projectile Halo {Ice}";
-                                Projhash = -1671677000;
+                                projhalohash = -1671677000;
                                 Notif.SendNotification("Changed Projectile: Ice");
                             }
-                            if (ProjType == 7)
+                            if (projhalotype == 7)
                             {
                                 buttons[18] = "Projectile Halo {Elf}";
-                                Projhash = 1705139863;
+                                projhalohash = 1705139863;
                                 Notif.SendNotification("Changed Projectile: Elf");
                             }
-                            if (ProjType == 8)
+                            if (projhalotype == 8)
                             {
                                 buttons[18] = "Projectile Halo {Rock}";
-                                Projhash = PoolUtils.GameObjHashCode(GameObject.Find("Environment Objects/PersistentObjects_Prefab/GlobalObjectPools/LavaRockProjectile(Clone)"));
+                                projhalohash = PoolUtils.GameObjHashCode(GameObject.Find("Environment Objects/PersistentObjects_Prefab/GlobalObjectPools/LavaRockProjectile(Clone)"));
                                 Notif.SendNotification("Changed Projectile: Rock");
                             }
-                            if (ProjType == 9)
+                            if (projhalotype == 9)
                             {
                                 buttons[18] = "Projectile Halo {Spider}";
-                                Projhash = -790645151;
+                                projhalohash = -790645151;
                                 Notif.SendNotification("Changed Projectile: Spider");
                             }
-                            if (ProjType >= 10)
+                            if (projhalotype >= 10)
                             {
-                                ProjType = 0;
+                                projhalotype = 0;
                                 buttons[18] = "Projectile Halo {SlingShot}";
-                                Projhash = -820530352;
+                                projhalohash = -820530352;
                                 Notif.SendNotification("Changed Projectile: Slingshot");
                             }
 
@@ -1053,13 +1056,13 @@ namespace KmanMenu
                         float x = GorillaTagger.Instance.offlineVRRig.headConstraint.transform.position.x + 0.5f * Mathf.Cos(chatgpt);
                         float y = GorillaTagger.Instance.offlineVRRig.headConstraint.transform.position.y + 0.5f;
                         float z = GorillaTagger.Instance.offlineVRRig.headConstraint.transform.position.z + 0.5f * Mathf.Sin(chatgpt);
-                        if (GorillaGameManager.instance != null)
+                        if (GorillaGameManager.instance != null && Time.time > projectiletimeout + 0.002f)
                         {
                             GorillaGameManager.instance.photonView.RPC("LaunchSlingshotProjectile", RpcTarget.All, new object[]
                             {
                              new Vector3(x, y, z),
                              new Vector3(0,0,0),
-                             Projhash,
+                             projhalohash,
                              -1,
                              true,
                              GorillaGameManager.instance.IncrementLocalPlayerProjectileCount(),
@@ -1069,6 +1072,7 @@ namespace KmanMenu
                              1f,
                              1f,
                             });
+                            projectiletimeout = Time.time;
                         }
                     }
 
@@ -1160,7 +1164,7 @@ namespace KmanMenu
                     }
                     if (Input.RightGrip)
                     {
-                        if (GorillaGameManager.instance != null)
+                        if (GorillaGameManager.instance != null && Time.time > projectiletimeout + 0.002f)
                         {
                             GorillaGameManager.instance.photonView.RPC("LaunchSlingshotProjectile", RpcTarget.All, new object[]
                             {
@@ -1176,6 +1180,7 @@ namespace KmanMenu
                              1f,
                              1f,
                             });
+                            projectiletimeout = Time.time;
                         }
                     }
 
