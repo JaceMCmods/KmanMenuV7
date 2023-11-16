@@ -2,6 +2,7 @@
 using BepInEx.Logging;
 using GorillaNetworking;
 using HarmonyLib;
+using KmanMenu.Components;
 using KmanMenu.Helpers.Helper;
 using KmanMenu.Helpers.Notifacations;
 using Photon.Pun;
@@ -14,6 +15,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
 using Valve.VR;
+using Random = UnityEngine.Random;
 
 namespace KmanMenu
 {
@@ -823,15 +825,18 @@ namespace KmanMenu
                     {
                         if (GorillaGameManager.instance != null)
                         {
-                            int num2 = GorillaGameManager.instance.IncrementLocalPlayerProjectileCount();
+                            if (GorillaLocomotion.Player.Instance.rightControllerTransform.gameObject.GetComponent<VelocityTracker>() == null)
+                            {
+                                GorillaLocomotion.Player.Instance.rightControllerTransform.gameObject.AddComponent<VelocityTracker>();
+                            }
                             GorillaGameManager.instance.photonView.RPC("LaunchSlingshotProjectile", RpcTarget.All, new object[]
                             {
                              GorillaLocomotion.Player.Instance.rightControllerTransform.position,
-                             new Vector3(0,0,0),
+                             GorillaLocomotion.Player.Instance.rightControllerTransform.gameObject.GetComponent<VelocityTracker>().velocity,
                              Projhash,
                              -1,
                              true,
-                             num2,
+                             GorillaGameManager.instance.IncrementLocalPlayerProjectileCount(),
                              false,
                              1f,
                              1f,
@@ -939,7 +944,6 @@ namespace KmanMenu
                         vector *= d;
                         if (GorillaGameManager.instance != null)
                         {
-                            int num2 = GorillaGameManager.instance.IncrementLocalPlayerProjectileCount();
                             GorillaGameManager.instance.photonView.RPC("LaunchSlingshotProjectile", RpcTarget.All, new object[]
                             {
                              position,
@@ -947,7 +951,7 @@ namespace KmanMenu
                              Projhash,
                              -1,
                              true,
-                             num2,
+                             GorillaGameManager.instance.IncrementLocalPlayerProjectileCount(),
                              false,
                              1f,
                              1f,
@@ -1045,24 +1049,127 @@ namespace KmanMenu
                     }
                     if (Input.RightGrip)
                     {
-                        RaycastHit raycastHit;
-                        Physics.Raycast(GorillaTagger.Instance.rightHandTriggerCollider.transform.position, GorillaTagger.Instance.rightHandTriggerCollider.transform.up, out raycastHit);
-                        Vector3 position = GorillaTagger.Instance.rightHandTriggerCollider.transform.position;
-                        Vector3 point = raycastHit.point;
-                        Vector3 vector = (point - position).normalized;
-                        float d = 50f;
-                        vector *= d;
+                        chatgpt += 21 * Time.deltaTime;
+                        float x = GorillaTagger.Instance.offlineVRRig.headConstraint.transform.position.x + 0.5f * Mathf.Cos(chatgpt);
+                        float y = GorillaTagger.Instance.offlineVRRig.headConstraint.transform.position.y + 0.5f;
+                        float z = GorillaTagger.Instance.offlineVRRig.headConstraint.transform.position.z + 0.5f * Mathf.Sin(chatgpt);
                         if (GorillaGameManager.instance != null)
                         {
-                            int num2 = GorillaGameManager.instance.IncrementLocalPlayerProjectileCount();
                             GorillaGameManager.instance.photonView.RPC("LaunchSlingshotProjectile", RpcTarget.All, new object[]
                             {
-                             position,
-                             vector,
+                             new Vector3(x, y, z),
+                             new Vector3(0,0,0),
                              Projhash,
                              -1,
                              true,
-                             num2,
+                             GorillaGameManager.instance.IncrementLocalPlayerProjectileCount(),
+                             false,
+                             1f,
+                             1f,
+                             1f,
+                             1f,
+                            });
+                        }
+                    }
+
+                }
+                if (buttonsActive[19])
+                {
+                    if (Input.RightPrimary)
+                    {
+                        if (AllowProjChange)
+                        {
+                            ProjType++;
+                            if (ProjType == 0)
+                            {
+                                buttons[19] = "Projectile Rain {SlingShot}";
+                                Projhash = -820530352;
+                                Notif.SendNotification("Changed Projectile: Slingshot");
+                            }
+                            if (ProjType == 1)
+                            {
+                                buttons[19] = "Projectile Rain {Waterballoon}";
+                                Projhash = -1674517839;
+                                Notif.SendNotification("Changed Projectile: Waterballoon");
+                            }
+                            if (ProjType == 2)
+                            {
+                                buttons[19] = "Projectile Rain {SnowBall}";
+                                Projhash = -675036877;
+                                Notif.SendNotification("Changed Projectile: Snowball");
+                            }
+                            if (ProjType == 3)
+                            {
+                                buttons[19] = "Projectile Rain {DeadShot}";
+                                Projhash = 693334698;
+                                Notif.SendNotification("Changed Projectile: DeadShot");
+                            }
+                            if (ProjType == 4)
+                            {
+                                buttons[19] = "Projectile Rain {Cloud}";
+                                Projhash = 1511318966;
+                                Notif.SendNotification("Changed Projectile: Cloud");
+                            }
+                            if (ProjType == 5)
+                            {
+                                buttons[19] = "Projectile Rain {Cupid}";
+                                Projhash = 825718363;
+                                Notif.SendNotification("Changed Projectile: Cupid");
+                            }
+                            if (ProjType == 6)
+                            {
+                                buttons[19] = "Projectile Rain {Ice}";
+                                Projhash = -1671677000;
+                                Notif.SendNotification("Changed Projectile: Ice");
+                            }
+                            if (ProjType == 7)
+                            {
+                                buttons[19] = "Projectile Rain {Elf}";
+                                Projhash = 1705139863;
+                                Notif.SendNotification("Changed Projectile: Elf");
+                            }
+                            if (ProjType == 8)
+                            {
+                                buttons[19] = "Projectile Rain {Rock}";
+                                Projhash = PoolUtils.GameObjHashCode(GameObject.Find("Environment Objects/PersistentObjects_Prefab/GlobalObjectPools/LavaRockProjectile(Clone)"));
+                                Notif.SendNotification("Changed Projectile: Rock");
+                            }
+                            if (ProjType == 9)
+                            {
+                                buttons[19] = "Projectile Rain {Spider}";
+                                Projhash = -790645151;
+                                Notif.SendNotification("Changed Projectile: Spider");
+                            }
+                            if (ProjType >= 10)
+                            {
+                                ProjType = 0;
+                                buttons[19] = "Projectile Rain {SlingShot}";
+                                Projhash = -820530352;
+                                Notif.SendNotification("Changed Projectile: Slingshot");
+                            }
+
+                            Destroy(menu);
+                            menu = null;
+                            Draw();
+                            AllowProjChange = false;
+                        }
+                    }
+                    else
+                    {
+                        AllowProjChange = true;
+                    }
+                    if (Input.RightGrip)
+                    {
+                        if (GorillaGameManager.instance != null)
+                        {
+                            GorillaGameManager.instance.photonView.RPC("LaunchSlingshotProjectile", RpcTarget.All, new object[]
+                            {
+                             GorillaTagger.Instance.offlineVRRig.transform.position + new Vector3(Random.Range(-5f, 5f), 5f, Random.Range(-5f, 5f)),
+                             new Vector3(0,0,0),
+                             Projhash,
+                             -1,
+                             true,
+                             GorillaGameManager.instance.IncrementLocalPlayerProjectileCount(),
                              false,
                              1f,
                              1f,
@@ -1082,6 +1189,7 @@ namespace KmanMenu
         }
         static string fullstr;
         private static bool StopEsp;
+        static float chatgpt;
     }
     internal class BtnCollider : MonoBehaviour
     {
